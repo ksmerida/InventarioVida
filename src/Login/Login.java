@@ -4,16 +4,21 @@
  */
 package Login;
 
-import Conexion.Conexion;
+import Connection.Conexion;
 import Menu.Menu;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,13 +37,13 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
-        Window();
+        setupWindow();
     }
 
     Conexion Conex = new Conexion();
     Connection Cn = Conex.Conexion();
 
-    public void Window() {
+    private void setupWindow() {
         this.setResizable(false);
         this.fixedSize = this.getSize();
         this.setMinimumSize(fixedSize);
@@ -195,6 +200,11 @@ public class Login extends javax.swing.JFrame {
         txtPassword.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         txtPassword.setForeground(new java.awt.Color(32, 65, 148));
         txtPassword.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/userr.png"))); // NOI18N
@@ -291,6 +301,10 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
         login();
     }//GEN-LAST:event_btnLoginMouseClicked
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        login();
+    }//GEN-LAST:event_txtPasswordActionPerformed
 
     /**
      * @param args the command line arguments
