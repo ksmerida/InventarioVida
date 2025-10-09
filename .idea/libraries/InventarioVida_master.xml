@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="InventarioVida-master">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jbcrypt-0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/mysql-connector-j-9.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AnimatonClass.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
