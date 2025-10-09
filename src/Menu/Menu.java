@@ -27,27 +27,26 @@ public class Menu extends javax.swing.JFrame {
     private Dimension fixedSize;
     private GraphicsDevice currentDevice;
 
-    public Menu() {
+    public Menu(String name, String lastName, String rol) {
         initComponents();
         this.setLocationRelativeTo(null);
         setupWindow();
         applyHoverLabels();
+        lblRol.setText(rol);
+        lblNombre.setText(name + " " + lastName);
     }
 
     public void setupWindow() {
         this.setResizable(false);
 
-        // Guardamos tamaño fijo
         this.fixedSize = this.getSize();
         this.setMinimumSize(fixedSize);
         this.setMaximumSize(fixedSize);
 
-        // Guardamos monitor inicial
         if (this.getGraphicsConfiguration() != null) {
             this.currentDevice = this.getGraphicsConfiguration().getDevice();
         }
 
-        // Listener para mover entre monitores y mantener tamaño
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentMoved(java.awt.event.ComponentEvent evt) {
@@ -71,7 +70,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        // Controlar cierre de ventana con mensaje
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -86,13 +84,13 @@ public class Menu extends javax.swing.JFrame {
 
     private void hoverLabel(JLabel lbl, boolean entrar) {
         Color hoverColor = new Color(140, 198, 63); // #8cc63f
-        Color normalColor = new Color(32, 65, 148); // Ajusta al color inicial del label
+        Color normalColor = new Color(32, 65, 148);
 
         if (entrar) {
             lbl.setOpaque(true);
             lbl.setBackground(hoverColor);
             lbl.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-            lbl.setBorder(new LineBorder(hoverColor, 1, true)); // true = esquinas redondeadas
+            lbl.setBorder(new LineBorder(hoverColor, 1, true));
         } else {
             lbl.setBackground(normalColor);
             lbl.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -135,7 +133,7 @@ public class Menu extends javax.swing.JFrame {
             User userFrame = new User();
             Desktop.add(userFrame);
             userFrame.setVisible(true);
-            userFrame.setMaximum(false); 
+            userFrame.setMaximum(false);
             this.setLocationRelativeTo(null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,7 +167,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lblMenu = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
-        lblApellido = new javax.swing.JLabel();
+        lblRol = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jpBotones = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -311,7 +309,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(lblProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblSalidas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblSedes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblRoles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -355,7 +353,7 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(lblRoles, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(lblLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -364,9 +362,9 @@ public class Menu extends javax.swing.JFrame {
         lblNombre.setForeground(new java.awt.Color(32, 65, 148));
         lblNombre.setText("jLabelN");
 
-        lblApellido.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
-        lblApellido.setForeground(new java.awt.Color(32, 65, 148));
-        lblApellido.setText("jLabelA");
+        lblRol.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
+        lblRol.setForeground(new java.awt.Color(32, 65, 148));
+        lblRol.setText("jLabelA");
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(32, 65, 148));
@@ -413,35 +411,30 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jpBotones, javax.swing.GroupLayout.DEFAULT_SIZE, 866, Short.MAX_VALUE))))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(348, 348, 348)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(459, Short.MAX_VALUE)))
+                        .addComponent(jpBotones, javax.swing.GroupLayout.DEFAULT_SIZE, 866, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblRol, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jpBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170)
+                .addGap(104, 104, 104)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombre)
-                    .addComponent(lblApellido))
-                .addGap(0, 531, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(159, 159, 159)
-                    .addComponent(jLabel5)
-                    .addContainerGap(592, Short.MAX_VALUE)))
+                    .addComponent(lblRol, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addComponent(lblNombre)
+                .addGap(0, 519, Short.MAX_VALUE))
         );
 
         Desktop.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -507,7 +500,7 @@ public class Menu extends javax.swing.JFrame {
         if (result == JOptionPane.YES_OPTION) {
             Login login = new Login();
             login.setVisible(true);
-            login.setLocationRelativeTo(null); 
+            login.setLocationRelativeTo(null);
 
             this.dispose();
         }
@@ -524,37 +517,6 @@ public class Menu extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Menu().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane Desktop;
@@ -568,7 +530,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jpBotones;
-    private javax.swing.JLabel lblApellido;
     private javax.swing.JLabel lblBodegas;
     private javax.swing.JLabel lblEntradas;
     private javax.swing.JLabel lblLogout;
@@ -576,6 +537,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblProductos;
+    private javax.swing.JLabel lblRol;
     private javax.swing.JLabel lblRoles;
     private javax.swing.JLabel lblSalidas;
     private javax.swing.JLabel lblSedes;

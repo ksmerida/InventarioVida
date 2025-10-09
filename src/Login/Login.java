@@ -54,11 +54,9 @@ public class Login extends javax.swing.JFrame {
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentMoved(java.awt.event.ComponentEvent evt) {
-                // Comprobamos si cambió el GraphicsDevice (monitor)
                 if (getGraphicsConfiguration() != null) {
                     GraphicsDevice newDevice = getGraphicsConfiguration().getDevice();
                     if (currentDevice == null || newDevice != currentDevice) {
-                        // Restauramos tamaño fijo por si el SO/JVM intentó cambiarlo
                         setSize(fixedSize);
                         setMinimumSize(fixedSize);
                         setMaximumSize(fixedSize);
@@ -70,7 +68,6 @@ public class Login extends javax.swing.JFrame {
 
             @Override
             public void componentResized(java.awt.event.ComponentEvent evt) {
-                // Si por alguna razón intentan redimensionarlo, lo forzamos al fijo
                 if (fixedSize != null && !getSize().equals(fixedSize)) {
                     setSize(fixedSize);
                 }
@@ -78,7 +75,7 @@ public class Login extends javax.swing.JFrame {
         });
     }
 
-    public void login() {
+    private void login() {
         String email = txtUser.getText().trim();
         String pass = txtPassword.getText();
 
@@ -95,29 +92,34 @@ public class Login extends javax.swing.JFrame {
             cs.setString(2, email);
             ResultSet rs = cs.executeQuery();
 
-            // 3. Verificar si existe usuario
             if (rs.next()) {
-                String storedHash = rs.getString("password_hash"); // hash almacenado
-                String nombreRol = rs.getString("nombre_rol");    // si quieres usarlo
-                String nombres = rs.getString("nombres");
+                String storedHash = rs.getString("password_hash");
+                String rolName = rs.getString("nombre_rol");
+                String name = rs.getString("nombres");
+                String lastName = rs.getString("apellidos");
 
-                // 4. Verificar contraseña
                 if (AuthUtils.checkPassword(pass, storedHash)) {
-                    // Login correcto → abrir JFrame menu
-                    JOptionPane.showMessageDialog(this, "Bienvenido, " + nombres + " (" + nombreRol + ")");
-                    new Menu().setVisible(true);
+                    JOptionPane.showMessageDialog(this, "Bienvenido, " + name + " " + lastName);
+                    new Menu(name, lastName, rolName).setVisible(true);
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+                    clearLogin();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+                clearLogin();
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos.");
         }
+    }
+
+    private void clearLogin() {
+        txtUser.setText("");
+        txtPassword.setText("");
     }
 
     /**
@@ -139,6 +141,7 @@ public class Login extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JLabel();
+        chkShowPass = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -148,7 +151,6 @@ public class Login extends javax.swing.JFrame {
                 formMousePressed(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jpLogin.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -220,36 +222,55 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        chkShowPass.setBackground(new java.awt.Color(255, 255, 255));
+        chkShowPass.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        chkShowPass.setForeground(new java.awt.Color(32, 65, 148));
+        chkShowPass.setText("Mostrar Contraseña");
+        chkShowPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkShowPassActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpLoginLayout = new javax.swing.GroupLayout(jpLogin);
         jpLogin.setLayout(jpLoginLayout);
         jpLoginLayout.setHorizontalGroup(
             jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpLoginLayout.createSequentialGroup()
-                .addGroup(jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpLoginLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpLoginLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpLoginLayout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jpBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jpLoginLayout.createSequentialGroup()
-                .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpLoginLayout.createSequentialGroup()
+                .addGroup(jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jpLoginLayout.createSequentialGroup()
+                        .addGroup(jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpLoginLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpLoginLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jpLoginLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jpLoginLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(chkShowPass)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jpLoginLayout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpLoginLayout.setVerticalGroup(
             jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpLoginLayout.createSequentialGroup()
                 .addComponent(jpBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
                 .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
                 .addGroup(jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,13 +281,25 @@ public class Login extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addGroup(jpLoginLayout.createSequentialGroup()
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkShowPass)))
+                .addGap(18, 18, 18)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jpLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 370, 510));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -306,6 +339,14 @@ public class Login extends javax.swing.JFrame {
         login();
     }//GEN-LAST:event_txtPasswordActionPerformed
 
+    private void chkShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowPassActionPerformed
+        if (chkShowPass.isSelected()) {
+            txtPassword.setEchoChar((char) 0); // Muestra el texto
+        } else {
+            txtPassword.setEchoChar('•');    // Oculta el texto
+        }
+    }//GEN-LAST:event_chkShowPassActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -343,6 +384,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnLogin;
+    private javax.swing.JCheckBox chkShowPass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
