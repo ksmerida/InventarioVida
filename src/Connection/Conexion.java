@@ -6,13 +6,15 @@ package Connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 /**
  *
  * @author kylie
  */
 public class Conexion {
-    Connection conect = null;
+    private static Connection conect = null;
     String user = "root";
     String pass = "";
     String url = "jdbc:mysql://127.0.0.1:3306/inventario?useSSL=false&serverTimezone=UTC";
@@ -36,4 +38,9 @@ public class Conexion {
         }
         return conect;
     }
+    
+     public static Connection getConnection() throws SQLException {
+        return conect;
+    }
+    
 }
