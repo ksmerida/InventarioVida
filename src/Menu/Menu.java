@@ -5,6 +5,7 @@
 package Menu;
 
 import Login.Login;
+import Marcas.Marcas;
 import Role.Role;
 import Role.Role;
 import User.User;
@@ -159,6 +160,29 @@ public class Menu extends javax.swing.JFrame {
         e.printStackTrace();
     }
 }
+    
+    private void openMarca() {
+    try {
+        // Recorre todos los frames abiertos para evitar duplicados
+        for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+            if (frame instanceof Marcas) {
+                frame.toFront();
+                frame.setVisible(true);
+                return;
+            }
+        }
+        // Si no está abierto, crea uno nuevo
+        Marcas marcaFrame = new Marcas();
+        Desktop.add(marcaFrame);
+        marcaFrame.setVisible(true);
+        marcaFrame.setMaximum(false); // evita que quede maximizado automáticamente
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al abrir el módulo Marcas: " + e.getMessage());
+    }
+}
+
+
 
 
     /**
@@ -225,6 +249,11 @@ public class Menu extends javax.swing.JFrame {
         lblMarcas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/etiqueta.png"))); // NOI18N
         lblMarcas.setText("  MARCAS");
         lblMarcas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblMarcas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblMarcasMouseClicked(evt);
+            }
+        });
 
         lblEntradas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblEntradas.setForeground(new java.awt.Color(255, 255, 255));
@@ -548,6 +577,10 @@ lblRoles.addMouseListener(new java.awt.event.MouseAdapter() {
 });
         // TODO add your handling code here:
     }//GEN-LAST:event_lblRolesMouseClicked
+
+    private void lblMarcasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMarcasMouseClicked
+        openMarca();
+    }//GEN-LAST:event_lblMarcasMouseClicked
 
     /**
      * @param args the command line arguments
