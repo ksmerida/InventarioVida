@@ -141,11 +141,11 @@ public class Producto extends javax.swing.JInternalFrame {
         header.setBackground(new Color(220, 220, 220));
 
         DefaultTableModel model = new DefaultTableModel(
-                new Object[]{"ID", "NOMBRE", "MARCA", "CÓDIGO", "COLOR", "STOCK"}, 0
+                new Object[]{"ID", "NOMBRE", "MARCA", "DESCRIPCION", "CODIGO DE BARRAS", "COLOR", "PRESENTACION", "UNIDAD DE MEDIDA", "STOCK"}, 0
         );
 
         try {
-            String sql = "SELECT p.id_producto, p.nombre_producto, m.nombre_marca, p.codigo_barras, p.color, p.stock FROM producto p INNER JOIN marca m ON p.id_marca = m.id_marca WHERE p.estado = 1";
+            String sql = "SELECT p.id_producto, p.nombre_producto, m.nombre_marca, p.descripcion, p.codigo_barras, p.color, p.presentacion, p.unidad_medida, p.stock FROM producto p INNER JOIN marca m ON p.id_marca = m.id_marca WHERE p.estado = 1";
 
             PreparedStatement ps = Cn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -155,8 +155,11 @@ public class Producto extends javax.swing.JInternalFrame {
                     rs.getInt("id_producto"),
                     rs.getString("nombre_producto"),
                     rs.getString("nombre_marca"),
+                    rs.getString("descripcion"),
                     rs.getString("codigo_barras"),
                     rs.getString("color"),
+                    rs.getString("presentacion"),
+                    rs.getString("unidad_medida"),
                     rs.getInt("stock")
                 });
             }
@@ -180,9 +183,12 @@ public class Producto extends javax.swing.JInternalFrame {
 
         txtNombre.setText(tblProductos.getValueAt(fila, 1).toString());
         cmbMarca.setSelectedItem(getMarcaItemByName(tblProductos.getValueAt(fila, 2).toString()));
-        txtCodigoBarras.setText(tblProductos.getValueAt(fila, 3).toString());
-        txtColor.setText(tblProductos.getValueAt(fila, 4).toString());
-        jStock.setValue(tblProductos.getValueAt(fila, 5));
+        txtDescripcion.setText(tblProductos.getValueAt(fila, 3).toString());
+        txtCodigoBarras.setText(tblProductos.getValueAt(fila, 4).toString());
+        txtColor.setText(tblProductos.getValueAt(fila, 5).toString());
+        txtPresentacion.setText(tblProductos.getValueAt(fila, 6).toString());
+        txtUnidadMedida.setText(tblProductos.getValueAt(fila, 7).toString());
+        jStock.setValue(tblProductos.getValueAt(fila, 8));
         lblSave.setText("ACTUALIZAR");
     }
     
@@ -261,19 +267,19 @@ public class Producto extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtCodigoBarras = new javax.swing.JPasswordField();
         cmbMarca = new javax.swing.JComboBox<>();
         lblSave = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        txtPresentacion = new javax.swing.JPasswordField();
         jLabel9 = new javax.swing.JLabel();
         txtUnidadMedida = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtColor = new javax.swing.JTextField();
         jStock = new javax.swing.JSpinner();
+        txtPresentacion = new javax.swing.JTextField();
+        txtCodigoBarras = new javax.swing.JTextField();
 
         Editar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         Editar.setText("Editar");
@@ -294,11 +300,15 @@ public class Producto extends javax.swing.JInternalFrame {
         UD.add(Eliminar);
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Productos");
+        setToolTipText("");
         setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        setFrameIcon(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -331,15 +341,6 @@ public class Producto extends javax.swing.JInternalFrame {
         jLabel5.setForeground(new java.awt.Color(32, 65, 148));
         jLabel5.setText("Codigo de Barras");
 
-        txtCodigoBarras.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        txtCodigoBarras.setForeground(new java.awt.Color(32, 65, 148));
-        txtCodigoBarras.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
-        txtCodigoBarras.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoBarrasActionPerformed(evt);
-            }
-        });
-
         cmbMarca.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         cmbMarca.setForeground(new java.awt.Color(32, 65, 148));
         cmbMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -369,7 +370,7 @@ public class Producto extends javax.swing.JInternalFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true, true, true
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -388,10 +389,6 @@ public class Producto extends javax.swing.JInternalFrame {
         jLabel8.setForeground(new java.awt.Color(32, 65, 148));
         jLabel8.setText("Color");
 
-        txtPresentacion.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        txtPresentacion.setForeground(new java.awt.Color(32, 65, 148));
-        txtPresentacion.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
-
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(32, 65, 148));
         jLabel9.setText("Unidad de Medida");
@@ -409,6 +406,14 @@ public class Producto extends javax.swing.JInternalFrame {
         txtColor.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
 
         jStock.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+
+        txtPresentacion.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        txtPresentacion.setForeground(new java.awt.Color(32, 65, 148));
+        txtPresentacion.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
+
+        txtCodigoBarras.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        txtCodigoBarras.setForeground(new java.awt.Color(32, 65, 148));
+        txtCodigoBarras.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -451,16 +456,20 @@ public class Producto extends javax.swing.JInternalFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel7)
                                             .addComponent(jLabel5))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbMarca, 0, 240, Short.MAX_VALUE)
-                                    .addComponent(txtCodigoBarras)
-                                    .addComponent(txtPresentacion))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbMarca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPresentacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(77, 77, 77))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(431, 431, 431)
                 .addComponent(lblSave)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(728, Short.MAX_VALUE)
+                    .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(67, 67, 67)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,15 +492,14 @@ public class Producto extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txtPresentacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                    .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPresentacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -502,6 +510,11 @@ public class Producto extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(153, 153, 153)
+                    .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(624, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -535,10 +548,6 @@ public class Producto extends javax.swing.JInternalFrame {
         deleteProducto();
     }//GEN-LAST:event_EliminarActionPerformed
 
-    private void txtCodigoBarrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoBarrasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoBarrasActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Editar;
@@ -559,11 +568,11 @@ public class Producto extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner jStock;
     private javax.swing.JLabel lblSave;
     private javax.swing.JTable tblProductos;
-    private javax.swing.JPasswordField txtCodigoBarras;
+    private javax.swing.JTextField txtCodigoBarras;
     private javax.swing.JTextField txtColor;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JPasswordField txtPresentacion;
+    private javax.swing.JTextField txtPresentacion;
     private javax.swing.JTextField txtUnidadMedida;
     // End of variables declaration//GEN-END:variables
 }
