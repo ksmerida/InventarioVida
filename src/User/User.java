@@ -209,13 +209,16 @@ public class User extends javax.swing.JInternalFrame {
         }
     }
 
-    private void clearUsers() {
-        txtNames.setText("");
-        txtLastName.setText("");
-        txtEmail.setText("");
-        txtPassword.setText("");
+private void clearUsers() {
+    txtNames.setText("");
+    txtLastName.setText("");
+    txtEmail.setText("");
+    txtPassword.setText("");
+    if (cmbRole.getItemCount() > 0) { // Verificación
         cmbRole.setSelectedIndex(0);
     }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -283,16 +286,19 @@ public class User extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(32, 65, 148));
         jLabel2.setText("Nombres");
 
-        txtNames.setBackground(new java.awt.Color(255, 255, 255));
         txtNames.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         txtNames.setForeground(new java.awt.Color(32, 65, 148));
         txtNames.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
+        txtNames.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNamesActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(32, 65, 148));
         jLabel3.setText("Apellidos");
 
-        txtLastName.setBackground(new java.awt.Color(255, 255, 255));
         txtLastName.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         txtLastName.setForeground(new java.awt.Color(32, 65, 148));
         txtLastName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
@@ -301,7 +307,6 @@ public class User extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(32, 65, 148));
         jLabel4.setText("Email");
 
-        txtEmail.setBackground(new java.awt.Color(255, 255, 255));
         txtEmail.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         txtEmail.setForeground(new java.awt.Color(32, 65, 148));
         txtEmail.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
@@ -310,7 +315,6 @@ public class User extends javax.swing.JInternalFrame {
         jLabel5.setForeground(new java.awt.Color(32, 65, 148));
         jLabel5.setText("Contraseña");
 
-        txtPassword.setBackground(new java.awt.Color(255, 255, 255));
         txtPassword.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         txtPassword.setForeground(new java.awt.Color(32, 65, 148));
         txtPassword.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
@@ -322,6 +326,11 @@ public class User extends javax.swing.JInternalFrame {
         cmbRole.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         cmbRole.setForeground(new java.awt.Color(32, 65, 148));
         cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbRoleActionPerformed(evt);
+            }
+        });
 
         lblSave.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         lblSave.setForeground(new java.awt.Color(140, 198, 63));
@@ -474,6 +483,14 @@ public class User extends javax.swing.JInternalFrame {
             txtPassword.setEchoChar('•');    // Oculta el texto
         }
     }//GEN-LAST:event_chkShowPassActionPerformed
+
+    private void txtNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNamesActionPerformed
+
+    private void cmbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRoleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbRoleActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
