@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import org.mindrot.jbcrypt.BCrypt;
@@ -33,6 +34,11 @@ public class Producto extends javax.swing.JInternalFrame {
         loadMarcas();
         showProductos();
         clearProducto();
+        
+        SpinnerNumberModel stockModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+        txtStock.setModel(stockModel);
+        
+        
     }
 
     Conexion Conex = new Conexion();
@@ -80,6 +86,7 @@ public class Producto extends javax.swing.JInternalFrame {
 
         try {
             int idMarca = Integer.parseInt(cmbMarca.getSelectedItem().toString().split(" - ")[0]);
+            int stock = (int) txtStock.getValue();
             String sql;
             PreparedStatement ps;
 
@@ -93,7 +100,7 @@ public class Producto extends javax.swing.JInternalFrame {
                 ps.setString(5, txtColor.getText().trim());
                 ps.setString(6, txtPresentacion.getText().trim());
                 ps.setString(7, txtUnidadMedida.getText().trim());
-                ps.setInt(8, Integer.parseInt(txtStock.getText().trim));
+                ps.setInt(8, stock);
                 ps.setBoolean(9, true);
                 ps.setInt(10, idProductoSelected);
             } else {
@@ -106,7 +113,7 @@ public class Producto extends javax.swing.JInternalFrame {
                 ps.setString(5, txtColor.getText().trim());
                 ps.setString(6, txtPresentacion.getText().trim());
                 ps.setString(7, txtUnidadMedida.getText().trim());
-                ps.setInt(8, Integer.parseInt(txtStock.getText().trim()));
+                ps.setInt(8, stock);
                 ps.setBoolean(9, true);
             }
 
@@ -176,7 +183,7 @@ public class Producto extends javax.swing.JInternalFrame {
         cmbMarca.setSelectedItem(getMarcaItemByName(tblProductos.getValueAt(fila, 2).toString()));
         txtCodigoBarras.setText(tblProductos.getValueAt(fila, 3).toString());
         txtColor.setText(tblProductos.getValueAt(fila, 4).toString());
-        txtStock.setText(tblProductos.getValueAt(fila, 5).toString());
+        txtStock.setValue(tblProductos.getValueAt(fila, 5));
         lblSave.setText("ACTUALIZAR");
     }
     
