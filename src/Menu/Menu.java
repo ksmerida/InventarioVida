@@ -5,6 +5,8 @@
 package Menu;
 
 import Login.Login;
+import Producto.Producto;
+import Sede.Sede;
 import User.User;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -139,6 +141,46 @@ public class Menu extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+        private void openSede() {
+        try {
+            for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+                if (frame instanceof Sede) {
+                    frame.toFront();
+                    frame.setVisible(true);
+                    return;
+                }
+            }
+            User userFrame = new User();
+            Desktop.add(userFrame);
+            userFrame.setVisible(true);
+            userFrame.setMaximum(false);
+            this.setLocationRelativeTo(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+        
+    private void openProducto() {
+        try {
+            for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+                if (frame instanceof Producto) {
+                    frame.toFront();
+                    frame.setVisible(true);
+                    return;
+                }
+            }
+            User userFrame = new User();
+            Desktop.add(userFrame);
+            userFrame.setVisible(true);
+            userFrame.setMaximum(false);
+            this.setLocationRelativeTo(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -197,6 +239,11 @@ public class Menu extends javax.swing.JFrame {
         lblProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/producto.png"))); // NOI18N
         lblProductos.setText("  PRODUCTOS");
         lblProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblProductosMouseClicked(evt);
+            }
+        });
 
         lblMarcas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblMarcas.setForeground(new java.awt.Color(255, 255, 255));
@@ -232,6 +279,11 @@ public class Menu extends javax.swing.JFrame {
         lblSedes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/ubicacion.png"))); // NOI18N
         lblSedes.setText("  SEDES");
         lblSedes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblSedes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblSedesMouseClicked(evt);
+            }
+        });
 
         lblUsuarios.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblUsuarios.setForeground(new java.awt.Color(255, 255, 255));
@@ -513,6 +565,14 @@ public class Menu extends javax.swing.JFrame {
     private void lblMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMenuMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_lblMenuMouseClicked
+
+    private void lblSedesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSedesMouseClicked
+        openSede();
+    }//GEN-LAST:event_lblSedesMouseClicked
+
+    private void lblProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblProductosMouseClicked
+        openProducto();
+    }//GEN-LAST:event_lblProductosMouseClicked
 
     /**
      * @param args the command line arguments
