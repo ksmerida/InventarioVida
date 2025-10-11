@@ -5,6 +5,8 @@
 package Menu;
 
 import Login.Login;
+import Role.Role;
+import Role.Role;
 import User.User;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -139,6 +141,25 @@ public class Menu extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+    private void openRole() {
+    try {
+        for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+            if (frame instanceof Role) {
+                frame.toFront();
+                frame.setVisible(true);
+                return;
+            }
+        }
+        Role roleFrame = new Role();
+        Desktop.add(roleFrame);
+        roleFrame.setVisible(true);
+        roleFrame.setMaximum(false);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -251,6 +272,11 @@ public class Menu extends javax.swing.JFrame {
         lblRoles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/roles.png"))); // NOI18N
         lblRoles.setText("  ROLES");
         lblRoles.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRoles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRolesMouseClicked(evt);
+            }
+        });
 
         lblLogout.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblLogout.setForeground(new java.awt.Color(255, 255, 255));
@@ -513,6 +539,15 @@ public class Menu extends javax.swing.JFrame {
     private void lblMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMenuMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_lblMenuMouseClicked
+
+    private void lblRolesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRolesMouseClicked
+lblRoles.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+        openRole();
+    }
+});
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblRolesMouseClicked
 
     /**
      * @param args the command line arguments
