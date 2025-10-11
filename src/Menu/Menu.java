@@ -4,7 +4,9 @@
  */
 package Menu;
 
+import Bodega.Bodega;
 import Login.Login;
+import Salida.Salida;
 import User.User;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -139,6 +141,56 @@ public class Menu extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+    // ABRIR BODEGA (versión sin parámetro)
+    public void openBodega() {
+        try {
+            for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+                if (frame instanceof Bodega) {
+                    frame.toFront();
+                    frame.setVisible(true);
+                    return;
+                }
+            }
+            Bodega bodegaFrame = new Bodega(); // ✅ sin parámetro
+            Desktop.add(bodegaFrame);
+            bodegaFrame.setVisible(true);
+            bodegaFrame.setMaximum(false);
+            bodegaFrame.setLocation(
+                (Desktop.getWidth() - bodegaFrame.getWidth()) / 2,
+                (Desktop.getHeight() - bodegaFrame.getHeight()) / 2
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+    // ABRIR SALIDA
+    public void openSalida() {
+        try {
+            for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+                if (frame instanceof Salida) { // ✅ busca si ya está abierta
+                    frame.toFront();
+                    frame.setVisible(true);
+                    return;
+                }
+            }
+
+            // ✅ crea una nueva instancia del InternalFrame Salida
+            Salida salidaFrame = new Salida(); 
+            Desktop.add(salidaFrame);
+            salidaFrame.setVisible(true);
+            salidaFrame.setMaximum(false);
+            salidaFrame.setLocation(
+                (Desktop.getWidth() - salidaFrame.getWidth()) / 2,
+                (Desktop.getHeight() - salidaFrame.getHeight()) / 2
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -218,6 +270,11 @@ public class Menu extends javax.swing.JFrame {
         lblBodegas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/almacenamiento.png"))); // NOI18N
         lblBodegas.setText("  BODEGAS");
         lblBodegas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblBodegas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblBodegasMouseClicked(evt);
+            }
+        });
 
         lblSalidas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblSalidas.setForeground(new java.awt.Color(255, 255, 255));
@@ -225,6 +282,11 @@ public class Menu extends javax.swing.JFrame {
         lblSalidas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/salidas.png"))); // NOI18N
         lblSalidas.setText("  SALIDAS");
         lblSalidas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblSalidas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblSalidasMouseClicked(evt);
+            }
+        });
 
         lblSedes.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblSedes.setForeground(new java.awt.Color(255, 255, 255));
@@ -513,6 +575,14 @@ public class Menu extends javax.swing.JFrame {
     private void lblMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMenuMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_lblMenuMouseClicked
+
+    private void lblBodegasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBodegasMouseClicked
+        openBodega();
+    }//GEN-LAST:event_lblBodegasMouseClicked
+
+    private void lblSalidasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalidasMouseClicked
+        openSalida();
+    }//GEN-LAST:event_lblSalidasMouseClicked
 
     /**
      * @param args the command line arguments
