@@ -31,14 +31,13 @@ public class Producto extends javax.swing.JInternalFrame {
     public Producto() {
         initComponents();
         setClosable(true);
+                
         loadMarcas();
         showProductos();
         clearProducto();
         
-        SpinnerNumberModel stockModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
-        txtStock.setModel(stockModel);
-        
-        
+
+              
     }
 
     Conexion Conex = new Conexion();
@@ -70,7 +69,7 @@ public class Producto extends javax.swing.JInternalFrame {
                 || txtColor.getText().trim().isEmpty()
                 || txtPresentacion.getText().trim().isEmpty()
                 || txtUnidadMedida.getText().trim().isEmpty()
-                || txtStock.getValue().equals(-1)
+                || jStock.getValue().equals(-1)
                 || cmbMarca.getSelectedIndex() == 0) {
 
             JOptionPane.showMessageDialog(this, "⚠️ Todos los campos son obligatorios", "Validación", JOptionPane.WARNING_MESSAGE);
@@ -86,7 +85,7 @@ public class Producto extends javax.swing.JInternalFrame {
 
         try {
             int idMarca = Integer.parseInt(cmbMarca.getSelectedItem().toString().split(" - ")[0]);
-            int stock = (int) txtStock.getValue();
+            int stock = (int) jStock.getValue();
             String sql;
             PreparedStatement ps;
 
@@ -183,7 +182,7 @@ public class Producto extends javax.swing.JInternalFrame {
         cmbMarca.setSelectedItem(getMarcaItemByName(tblProductos.getValueAt(fila, 2).toString()));
         txtCodigoBarras.setText(tblProductos.getValueAt(fila, 3).toString());
         txtColor.setText(tblProductos.getValueAt(fila, 4).toString());
-        txtStock.setValue(tblProductos.getValueAt(fila, 5));
+        jStock.setValue(tblProductos.getValueAt(fila, 5));
         lblSave.setText("ACTUALIZAR");
     }
     
@@ -238,7 +237,7 @@ public class Producto extends javax.swing.JInternalFrame {
         txtColor.setText("");
         txtPresentacion.setText("");
         txtUnidadMedida.setText("");
-        txtStock.setValue("");
+        jStock.setValue(0);
         cmbMarca.setSelectedIndex(0);
     }
 
@@ -274,7 +273,7 @@ public class Producto extends javax.swing.JInternalFrame {
         txtUnidadMedida = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtColor = new javax.swing.JTextField();
-        txtStock = new javax.swing.JSpinner();
+        jStock = new javax.swing.JSpinner();
 
         Editar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         Editar.setText("Editar");
@@ -409,9 +408,7 @@ public class Producto extends javax.swing.JInternalFrame {
         txtColor.setForeground(new java.awt.Color(32, 65, 148));
         txtColor.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(32, 65, 148)));
 
-        txtStock.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        txtStock.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        txtStock.setFocusable(false);
+        jStock.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -432,8 +429,8 @@ public class Producto extends javax.swing.JInternalFrame {
                                 .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(30, 30, 30)
                                 .addComponent(jLabel10)
-                                .addGap(26, 26, 26)
-                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51)
+                                .addComponent(jStock, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,13 +491,13 @@ public class Producto extends javax.swing.JInternalFrame {
                     .addComponent(txtPresentacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
-                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                    .addComponent(jStock, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addComponent(lblSave)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -559,6 +556,7 @@ public class Producto extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jStock;
     private javax.swing.JLabel lblSave;
     private javax.swing.JTable tblProductos;
     private javax.swing.JPasswordField txtCodigoBarras;
@@ -566,7 +564,6 @@ public class Producto extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JPasswordField txtPresentacion;
-    private javax.swing.JSpinner txtStock;
     private javax.swing.JTextField txtUnidadMedida;
     // End of variables declaration//GEN-END:variables
 }

@@ -151,7 +151,7 @@ public class Menu extends javax.swing.JFrame {
                     return;
                 }
             }
-            User userFrame = new User();
+            Sede userFrame = new Sede();
             Desktop.add(userFrame);
             userFrame.setVisible(true);
             userFrame.setMaximum(false);
@@ -171,7 +171,7 @@ public class Menu extends javax.swing.JFrame {
                     return;
                 }
             }
-            User userFrame = new User();
+            Producto userFrame = new Producto();
             Desktop.add(userFrame);
             userFrame.setVisible(true);
             userFrame.setMaximum(false);
