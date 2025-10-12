@@ -14,7 +14,7 @@ import java.sql.DriverManager;
 public class Conexion {
     Connection conect = null;
     String user = "root";
-    String pass = "16112002";
+    String pass = "1994";
     String url = "jdbc:mysql://127.0.0.1:3306/inventario?useSSL=false&serverTimezone=UTC";
 
     public Connection Conexion() {
