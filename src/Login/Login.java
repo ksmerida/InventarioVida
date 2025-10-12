@@ -226,6 +226,7 @@ public class Login extends javax.swing.JFrame {
         chkShowPass.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         chkShowPass.setForeground(new java.awt.Color(32, 65, 148));
         chkShowPass.setText("Mostrar Contraseña");
+        chkShowPass.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         chkShowPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkShowPassActionPerformed(evt);

@@ -4,6 +4,7 @@
  */
 package Menu;
 
+import Entradas.Entradas;
 import Login.Login;
 import Role.Role;
 import Role.Role;
@@ -161,6 +162,25 @@ public class Menu extends javax.swing.JFrame {
 }
 
 
+    private void openEntradas() {
+        try {
+            for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+                if (frame instanceof User) {
+                    frame.toFront();
+                    frame.setVisible(true);
+                    return;
+                }
+            }
+            Entradas entradasFrame = new Entradas();
+            Desktop.add(entradasFrame);
+            entradasFrame.setVisible(true);
+            entradasFrame.setMaximum(false);
+            this.setLocationRelativeTo(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -232,6 +252,11 @@ public class Menu extends javax.swing.JFrame {
         lblEntradas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/entradas.png"))); // NOI18N
         lblEntradas.setText("  ENTRADAS");
         lblEntradas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblEntradas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblEntradasMouseClicked(evt);
+            }
+        });
 
         lblBodegas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblBodegas.setForeground(new java.awt.Color(255, 255, 255));
@@ -548,6 +573,11 @@ lblRoles.addMouseListener(new java.awt.event.MouseAdapter() {
 });
         // TODO add your handling code here:
     }//GEN-LAST:event_lblRolesMouseClicked
+
+    private void lblEntradasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEntradasMouseClicked
+        openEntradas();
+    }//GEN-LAST:event_lblEntradasMouseClicked
+
 
     /**
      * @param args the command line arguments
