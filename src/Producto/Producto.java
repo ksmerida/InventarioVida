@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package Producto;
 
-import User.*;
 import Connection.Conexion;
 import java.awt.Color;
 import java.awt.Font;
@@ -13,31 +8,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
- * @author kylie
+ * @author Diego
  */
 public class Producto extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form User
-     */
     public Producto() {
         initComponents();
         setClosable(true);
                 
         loadMarcas();
         showProductos();
-        clearProducto();
-        
-
-              
+        clearProducto();      
     }
 
     Conexion Conex = new Conexion();
@@ -84,39 +72,39 @@ public class Producto extends javax.swing.JInternalFrame {
         }
 
         try {
-            int idMarca = Integer.parseInt(cmbMarca.getSelectedItem().toString().split(" - ")[0]);
+            int idMarca = Integer.parseInt(Objects.requireNonNull(cmbMarca.getSelectedItem()).toString().split(" - ")[0]);
             int stock = (int) jStock.getValue();
-            String sql;
-            PreparedStatement ps;
+            
+            String sql = "{CALL sp_producto(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+            CallableStatement cs = Cn.prepareCall(sql);
 
             if (edit) {
-                sql = "UPDATE producto SET id_marca=?, nombre_producto=?, descripcion=?, codigo_barras=?, color=?, presentacion=?, unidad_medida=?, stock=?, estado=? WHERE id_producto=?";
-                ps = Cn.prepareStatement(sql);
-                ps.setInt(1, idMarca);
-                ps.setString(2, txtNombre.getText().trim());
-                ps.setString(3, txtDescripcion.getText().trim());
-                ps.setString(4, txtCodigoBarras.getText().trim());
-                ps.setString(5, txtColor.getText().trim());
-                ps.setString(6, txtPresentacion.getText().trim());
-                ps.setString(7, txtUnidadMedida.getText().trim());
-                ps.setInt(8, stock);
-                ps.setBoolean(9, true);
-                ps.setInt(10, idProductoSelected);
+                cs.setString(1, "UP");
+                cs.setObject(2, idProductoSelected);
+                cs.setInt(3, idMarca);
+                cs.setString(4, txtNombre.getText().trim());
+                cs.setString(5, txtDescripcion.getText().trim());
+                cs.setString(6, txtCodigoBarras.getText().trim());
+                cs.setString(7, txtColor.getText().trim());
+                cs.setString(8, txtPresentacion.getText().trim());
+                cs.setString(9, txtUnidadMedida.getText().trim());
+                cs.setInt(10, stock);
+                cs.setBoolean(11, true);
             } else {
-                sql = "INSERT INTO producto (id_marca, nombre_producto, descripcion, codigo_barras, color, presentacion, unidad_medida, stock, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                ps = Cn.prepareStatement(sql);
-                ps.setInt(1, idMarca);
-                ps.setString(2, txtNombre.getText().trim());
-                ps.setString(3, txtDescripcion.getText().trim());
-                ps.setString(4, txtCodigoBarras.getText().trim());
-                ps.setString(5, txtColor.getText().trim());
-                ps.setString(6, txtPresentacion.getText().trim());
-                ps.setString(7, txtUnidadMedida.getText().trim());
-                ps.setInt(8, stock);
-                ps.setBoolean(9, true);
+                cs.setString(1, "IP");
+                cs.setObject(2, null);
+                cs.setInt(3, idMarca);
+                cs.setString(4, txtNombre.getText().trim());
+                cs.setString(5, txtDescripcion.getText().trim());
+                cs.setString(6, txtCodigoBarras.getText().trim());
+                cs.setString(7, txtColor.getText().trim());
+                cs.setString(8, txtPresentacion.getText().trim());
+                cs.setString(9, txtUnidadMedida.getText().trim());
+                cs.setInt(10, stock);
+                cs.setBoolean(11, true);
             }
 
-            ps.executeUpdate();
+            cs.execute();
 
             JOptionPane.showMessageDialog(this, edit
                     ? "✅ Producto actualizado correctamente"
@@ -145,10 +133,9 @@ public class Producto extends javax.swing.JInternalFrame {
         );
 
         try {
-            String sql = "SELECT p.id_producto, p.nombre_producto, m.nombre_marca, p.descripcion, p.codigo_barras, p.color, p.presentacion, p.unidad_medida, p.stock FROM producto p INNER JOIN marca m ON p.id_marca = m.id_marca WHERE p.estado = 1";
-
-            PreparedStatement ps = Cn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            String sql = "{CALL sp_producto('SP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)}";
+            CallableStatement cs = Cn.prepareCall(sql);
+            ResultSet rs = cs.executeQuery();
 
             while (rs.next()) {
                 model.addRow(new Object[]{
@@ -222,10 +209,11 @@ public class Producto extends javax.swing.JInternalFrame {
 
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                String sql = "UPDATE producto SET estado = 0 WHERE id_producto = ?";
-                PreparedStatement ps = Cn.prepareStatement(sql);
-                ps.setInt(1, idProducto);
-                ps.executeUpdate();
+                String sql = "{CALL sp_producto(?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)}";
+                 CallableStatement cs = Cn.prepareCall(sql);
+                cs.setString(1, "DP");
+                cs.setInt(2, idProducto);
+                cs.execute();
 
                 JOptionPane.showMessageDialog(this, "✅ Producto eliminado correctamente");
                 showProductos();

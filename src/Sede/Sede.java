@@ -1,22 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package Sede;
 
-import User.*;
 import Connection.Conexion;
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -24,9 +17,6 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class Sede extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form User
-     */
     public Sede() {
         initComponents();
         setClosable(true);
@@ -57,27 +47,26 @@ private void saveSede() {
     }
 
     try {
-        String sql;
-        PreparedStatement ps;
-
+        String sql = "{CALL sp_sede(?, ?, ?, ?, ?)}";
+        CallableStatement cs = Cn.prepareCall(sql);
+        
         if (edit) {
             // Actualizar una sede existente
-            sql = "UPDATE sede SET nombre_sede = ?, direccion = ?, estado = ? WHERE id_sede = ?";
-            ps = Cn.prepareStatement(sql);
-            ps.setString(1, txtNames.getText().trim());
-            ps.setString(2, txtDir.getText().trim());
-            ps.setBoolean(3, true);
-            ps.setInt(4, idSedeSelected);
+            cs.setString(1, "UU");
+            cs.setObject(2, idSedeSelected);
+            cs.setString(3, txtNames.getText().trim());
+            cs.setString(4, txtDir.getText().trim());
+            cs.setBoolean(5, true);
         } else {
             // Insertar una nueva sede
-            sql = "INSERT INTO sede (nombre_sede, direccion, estado) VALUES (?, ?, ?)";
-            ps = Cn.prepareStatement(sql);
-            ps.setString(1, txtNames.getText().trim());
-            ps.setString(2, txtDir.getText().trim());
-            ps.setBoolean(3, true);
+            cs.setString(1, "IU");
+            cs.setObject(2, null);
+            cs.setString(3, txtNames.getText().trim());
+            cs.setString(4, txtDir.getText().trim());
+            cs.setBoolean(5, true);
         }
 
-        ps.executeUpdate();
+        cs.execute();
 
         JOptionPane.showMessageDialog(this, edit
                 ? "✅ Sede actualizada correctamente"
@@ -107,9 +96,9 @@ private void showSedes() {
     );
 
     try {
-        String sql = "SELECT * FROM sede WHERE estado = 1";
-        PreparedStatement ps = Cn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
+        String sql = "{CALL sp_sede('SU', NULL, NULL, NULL, 1)}";
+        CallableStatement cs = Cn.prepareCall(sql);
+        ResultSet rs = cs.executeQuery();
 
         while (rs.next()) {
             model.addRow(new Object[]{
@@ -163,11 +152,12 @@ private void deleteSede() {
 
     if (confirm == JOptionPane.YES_OPTION) {
         try {
-            String sql = "UPDATE sede SET estado = 0 WHERE id_sede = ?";
-            PreparedStatement ps = Cn.prepareStatement(sql);
-            ps.setInt(1, idSede);
-            ps.executeUpdate();
-
+            String sql = "{CALL sp_sede(?, ?, NULL, NULL, NULL)}";
+            CallableStatement cs = Cn.prepareCall(sql);
+            cs.setString(1, "DU");
+            cs.setInt(2, idSede);
+            cs.execute();
+            
             JOptionPane.showMessageDialog(this, "✅ Sede eliminada correctamente");
             showSedes();
         } catch (SQLException e) {
@@ -229,7 +219,9 @@ private void clearSede() {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Sedes");
         setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        setFrameIcon(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
